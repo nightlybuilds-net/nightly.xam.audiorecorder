@@ -6,9 +6,17 @@
 
     <StackLayout>
         <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
+        <Label Text="Welcome to Nightly AudioRecorder" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
+        
+        <Button
+            Clicked="Button_OnClicked"
+            Text="Start"/>
+        <Button
+            Clicked="StopButton_OnClicked"
+            Text="Stop"/>
+        
     </StackLayout>
 
 </ContentPage>

@@ -10,9 +10,9 @@ namespace nightly.xam.audiorecorder.forms
     {
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            MainPage = new MainPage();
+            this.MainPage = new MainPage();
         }
 
         protected override void OnStart()

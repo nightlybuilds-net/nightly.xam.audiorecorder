@@ -1,6 +1,8 @@
 <Project Sdk="MSBuild.Sdk.Extras/3.0.22">
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;xamarinios10;monoandroid10.0;</TargetFrameworks>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU;IPhoneSimulator</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

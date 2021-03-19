@@ -19,23 +19,32 @@ namespace nightly.xam.audiorecorder
 
         private void StartRecorder()
         {
-            if (File.Exists(this._filePath))
-                File.Delete(this._filePath);
+            try
+            {
+                if (File.Exists(this._filePath))
+                    File.Delete(this._filePath);
 
-            Java.IO.File myFile = new Java.IO.File(this._filePath);
-            myFile.CreateNewFile();
+                Java.IO.File myFile = new Java.IO.File(this._filePath);
+                myFile.CreateNewFile();
 
-            if (this._recorder == null)
-                this._recorder = new MediaRecorder(); 
-            else
-                this._recorder.Reset();
+                if (this._recorder == null)
+                    this._recorder = new MediaRecorder(); 
+                else
+                    this._recorder.Reset();
 
-            this._recorder.SetAudioSource(AudioSource.Mic);
-            this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
-            this._recorder.SetAudioEncoder(AudioEncoder.AmrNb);
-            this._recorder.SetOutputFile(this._filePath);
-            this._recorder.Prepare();
-            this._recorder.Start();
+                this._recorder.SetAudioSource(AudioSource.Mic);
+                this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
+                this._recorder.SetAudioEncoder(AudioEncoder.AmrNb);
+                this._recorder.SetOutputFile(this._filePath);
+                this._recorder.Prepare();
+                this._recorder.Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
         }
 
         private void StopRecorder()
@@ -62,14 +71,10 @@ namespace nightly.xam.audiorecorder
         public void Stop()
         {
             this.StopRecorder();
-            var stream = this.GetAudioFileStream();
+            var stream = !File.Exists(this._filePath) ? null : File.OpenRead(this._filePath);
             this._recordTask.TrySetResult(stream); 
         }
 
 
-        public Stream GetAudioFileStream()
-        {
-            return !File.Exists(this._filePath) ? null : File.OpenRead(this._filePath);
-        }
     }
 }

@@ -21,10 +21,6 @@ namespace nightly.xam.audiorecorder
         /// </summary>
         bool IsRecording { get; }
 
-        /// <summary>
-        /// Get recorded file stream
-        /// </summary>
-        /// <returns></returns>
-        Stream GetAudioFileStream();
+       
     }
 }

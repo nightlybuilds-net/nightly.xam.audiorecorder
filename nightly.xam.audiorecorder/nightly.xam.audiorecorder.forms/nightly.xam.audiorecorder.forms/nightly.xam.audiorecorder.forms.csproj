@@ -12,4 +12,8 @@
     <ItemGroup>
         <PackageReference Include="Xamarin.Forms" Version="4.4.0.991640" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\nightly.xam.audiorecorder\nightly.xam.audiorecorder.csproj" />
+    </ItemGroup>
 </Project>

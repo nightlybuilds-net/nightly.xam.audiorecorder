@@ -1,10 +1,13 @@
 ﻿using System;
+using Android;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 
 namespace nightly.xam.audiorecorder.forms.Android
 {
@@ -18,8 +21,14 @@ namespace nightly.xam.audiorecorder.forms.Android
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            
+            if (ContextCompat.CheckSelfPermission (this, Manifest.Permission.RecordAudio) != Permission.Granted)
+            {
+                ActivityCompat.RequestPermissions (this, new String [] { Manifest.Permission.RecordAudio }, 1);
+            }
+            
+            this.LoadApplication(new App());
         }
     }
 }

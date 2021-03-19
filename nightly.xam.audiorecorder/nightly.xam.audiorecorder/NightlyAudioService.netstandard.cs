@@ -17,9 +17,6 @@ namespace nightly.xam.audiorecorder
         }
 
         public bool IsRecording => throw new NotImplementedException();
-        public Stream GetAudioFileStream()
-        {
-            throw new System.NotImplementedException();
-        }
+       
     }
 }
