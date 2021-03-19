@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace nightly.xam.audiorecorder
 {
-    public partial class NightlyAudioService : IRecorder 
+    public partial class NightlyRecorderService : IRecorder 
     {
         public Task<Stream> StartAsync()
         {

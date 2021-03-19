@@ -6,7 +6,7 @@ using Stream = System.IO.Stream;
 
 namespace nightly.xam.audiorecorder
 {
-    public partial class NightlyAudioService : IRecorder 
+    public partial class NightlyRecorderService : IRecorder 
     {
         string _filePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
             "mic_record.mp4");

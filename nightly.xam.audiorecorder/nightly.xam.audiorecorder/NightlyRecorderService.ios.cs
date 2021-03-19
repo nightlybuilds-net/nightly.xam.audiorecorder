@@ -6,15 +6,15 @@ using Foundation;
 
 namespace nightly.xam.audiorecorder
 {
-    public partial class NightlyAudioService : IRecorder 
+    public partial class NightlyRecorderService : IRecorder 
     {
         private AVAudioRecorder _recorder;
         private NSUrl _url;
         private NSDictionary _settings;
         private string _path;
         private TaskCompletionSource<Stream> _recordTask;
-        
-        public bool IsRecording { get; private set; }
+
+        public bool IsRecording => this._recorder?.Recording ?? false; 
 
 
         public Task<Stream> StartAsync()
@@ -24,7 +24,6 @@ namespace nightly.xam.audiorecorder
             
             this.InitializeRecordService();
             this._recorder.Record ();
-            this.IsRecording = true;
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;
         }
@@ -33,9 +32,8 @@ namespace nightly.xam.audiorecorder
         {
             if (!this.IsRecording || this._recorder == null)
                 return;
-            
+        
             this._recorder.Stop ();
-            this.IsRecording = false;
 
             using (var streamReader = new StreamReader(this._path))
             {
@@ -44,12 +42,9 @@ namespace nightly.xam.audiorecorder
                 this._recordTask.TrySetResult(memstream);
             }
 
-            File.Delete(this._path);
+            //File.Delete(this._path);
         }
 
-    
-       
-        
         private void InitializeRecordService()
         {
             var audioSession = AVAudioSession.SharedInstance ();
@@ -66,7 +61,7 @@ namespace nightly.xam.audiorecorder
             //Declare string for application temp path and tack on the file extension
             var path = Path.GetTempPath();
 
-            var fileName = string.Format ("audio{0}.wav", DateTime.Now.ToString ("yyyyMMddHHmmss"));
+            var fileName = string.Format ("audio{0}.mp4", DateTime.Now.ToString ("yyyyMMddHHmmss"));
             var audioFilePath = Path.Combine (path, fileName);
 
             Console.WriteLine("Audio File Path: " + audioFilePath);
@@ -76,9 +71,9 @@ namespace nightly.xam.audiorecorder
             //set up the NSObject Array of values that will be combined with the keys to make the NSDictionary
             NSObject[] values = 
             {
-                NSNumber.FromFloat (44100.0f), //Sample Rate
-                NSNumber.FromInt32 ((int)AudioToolbox.AudioFormatType.LinearPCM), //AVFormat
-                NSNumber.FromInt32 (2), //Channels
+                NSNumber.FromFloat (12000.0f), //Sample Rate
+                NSNumber.FromInt32 ((int)AudioToolbox.AudioFormatType.MPEG4AAC), //AVFormat
+                NSNumber.FromInt32 (1), //Channels
                 NSNumber.FromInt32 (16), //PCMBitDepth
                 NSNumber.FromBoolean (false), //IsBigEndianKey
                 NSNumber.FromBoolean (false) //IsFloatKey

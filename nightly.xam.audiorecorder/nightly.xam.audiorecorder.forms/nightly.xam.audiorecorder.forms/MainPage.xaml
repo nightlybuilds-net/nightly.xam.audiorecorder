@@ -16,6 +16,9 @@
         <Button
             Clicked="StopButton_OnClicked"
             Text="Stop"/>
+        <Button
+            Clicked="PlayButton_OnClicked"
+            Text="Play"/>
         
     </StackLayout>
 
