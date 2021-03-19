@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder.forms", "nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms.csproj", "{FC0BB717-B1EF-4F58-A122-9B18FD977ABE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder.forms.Android", "nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms.Android\nightly.xam.audiorecorder.forms.Android.csproj", "{881E0911-1EA3-4BC2-BD6E-0B09297A4661}"
@@ -7,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder.forms.iOS", "nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms.iOS\nightly.xam.audiorecorder.forms.iOS.csproj", "{B76DDAC5-42C7-42B2-9966-CAE8BB095374}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{0997C6F8-43D7-4B2E-A198-F1EC7383189A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder", "nightly.xam.audiorecorder\nightly.xam.audiorecorder.csproj", "{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +87,22 @@ Global
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.Deploy.0 = Release|iPhoneSimulator
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|iPhoneSimulator.ActiveCfg = Debug|IPhoneSimulator
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Debug|iPhoneSimulator.Build.0 = Debug|IPhoneSimulator
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|iPhone.Build.0 = Release|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A46D128A-89A0-440E-A90E-1CE2C5CDBAF7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FC0BB717-B1EF-4F58-A122-9B18FD977ABE} = {0997C6F8-43D7-4B2E-A198-F1EC7383189A}

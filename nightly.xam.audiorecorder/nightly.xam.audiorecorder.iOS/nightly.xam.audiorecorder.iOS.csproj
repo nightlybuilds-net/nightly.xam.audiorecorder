@@ -3,14 +3,12 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-        <ProductVersion>8.0.30703</ProductVersion>
-        <SchemaVersion>2.0</SchemaVersion>
-        <ProjectGuid>{B76DDAC5-42C7-42B2-9966-CAE8BB095374}</ProjectGuid>
+        <ProjectGuid>{3458997F-5935-4FC2-96BE-D28481D6C495}</ProjectGuid>
         <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Exe</OutputType>
-        <RootNamespace>nightly.xam.audiorecorder.forms.iOS</RootNamespace>
+        <RootNamespace>nightly.xam.audiorecorder.iOS</RootNamespace>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-        <AssemblyName>nightly.xam.audiorecorder.forms.iOS</AssemblyName>
+        <AssemblyName>nightly.xam.audiorecorder.iOS</AssemblyName>
         <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -46,9 +44,9 @@
         <WarningLevel>4</WarningLevel>
         <ConsolePause>false</ConsolePause>
         <MtouchArch>ARM64</MtouchArch>
+        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
         <CodesignKey>iPhone Developer</CodesignKey>
         <MtouchDebug>true</MtouchDebug>
-        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
         <MtouchLink>SdkOnly</MtouchLink>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -57,51 +55,19 @@
         <OutputPath>bin\iPhone\Release</OutputPath>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
+        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
         <MtouchArch>ARM64</MtouchArch>
         <ConsolePause>false</ConsolePause>
         <CodesignKey>iPhone Developer</CodesignKey>
-        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-        <MtouchLink>SdkOnly</MtouchLink>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
-        <DebugType>none</DebugType>
-        <Optimize>True</Optimize>
-        <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <ConsolePause>False</ConsolePause>
-        <MtouchArch>ARM64</MtouchArch>
-        <BuildIpa>True</BuildIpa>
-        <CodesignProvision>Automatic:AdHoc</CodesignProvision>
-        <CodesignKey>iPhone Distribution</CodesignKey>
-        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-        <MtouchLink>SdkOnly</MtouchLink>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
-        <DebugType>none</DebugType>
-        <Optimize>True</Optimize>
-        <OutputPath>bin\iPhone\AppStore</OutputPath>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <ConsolePause>False</ConsolePause>
-        <MtouchArch>ARM64</MtouchArch>
-        <CodesignProvision>Automatic:AppStore</CodesignProvision>
-        <CodesignKey>iPhone Distribution</CodesignKey>
-        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
         <MtouchLink>SdkOnly</MtouchLink>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Main.cs" />
         <Compile Include="AppDelegate.cs" />
-        <None Include="Entitlements.plist" />
         <None Include="Info.plist" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-            <Visible>false</Visible>
-        </ImageAsset>
+        <Content Include="Entitlements.plist" />
+        <InterfaceDefinition Include="LaunchScreen.storyboard" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System" />
@@ -110,13 +76,18 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991640" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+            <Visible>false</Visible>
+        </ImageAsset>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms.csproj">
-            <Project>{FC0BB717-B1EF-4F58-A122-9B18FD977ABE}</Project>
-            <Name>nightly.xam.audiorecorder.forms</Name>
-        </ProjectReference>
+        <Folder Include="Resources\" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\nightly.xam.audiorecorder\nightly.xam.audiorecorder.csproj">
+        <Project>{a46d128a-89a0-440e-a90e-1ce2c5cdbaf7}</Project>
+        <Name>nightly.xam.audiorecorder</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

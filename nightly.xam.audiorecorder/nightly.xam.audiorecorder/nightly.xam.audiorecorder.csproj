@@ -1,0 +1,25 @@
+<Project Sdk="MSBuild.Sdk.Extras/3.0.22">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;xamarinios10;monoandroid10.0;</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="**\*.netstandard.cs" />
+        <Compile Remove="**\*.droid.cs" />
+        <Compile Remove="**\*.ios.cs" />
+        <Compile Remove="**\*.windows.cs" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+        <Compile Include="**\*.netstandard.cs" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarinios')) ">
+        <Compile Include="**\*.ios.cs" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
+        <Compile Include="**\*.droid.cs" />
+    </ItemGroup>
+    
+</Project>
