@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder.f
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nightly.xam.audiorecorder.forms.iOS", "nightly.xam.audiorecorder.forms\nightly.xam.audiorecorder.forms.iOS\nightly.xam.audiorecorder.forms.iOS.csproj", "{B76DDAC5-42C7-42B2-9966-CAE8BB095374}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{0997C6F8-43D7-4B2E-A198-F1EC7383189A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
@@ -82,5 +84,10 @@ Global
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{B76DDAC5-42C7-42B2-9966-CAE8BB095374}.Release|iPhoneSimulator.Deploy.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC0BB717-B1EF-4F58-A122-9B18FD977ABE} = {0997C6F8-43D7-4B2E-A198-F1EC7383189A}
+		{881E0911-1EA3-4BC2-BD6E-0B09297A4661} = {0997C6F8-43D7-4B2E-A198-F1EC7383189A}
+		{B76DDAC5-42C7-42B2-9966-CAE8BB095374} = {0997C6F8-43D7-4B2E-A198-F1EC7383189A}
 	EndGlobalSection
 EndGlobal
