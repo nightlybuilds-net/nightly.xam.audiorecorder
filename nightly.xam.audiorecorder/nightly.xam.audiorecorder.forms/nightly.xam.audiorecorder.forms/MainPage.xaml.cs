@@ -21,7 +21,7 @@ namespace nightly.xam.audiorecorder.forms
 
         private async void Button_OnClicked(object sender, EventArgs e)
         {
-            var streamFile = await this._recordService.StartAsync();
+            var streamFile = await this._recordService.RecordAsync();
             this._stream = streamFile;
         }
 

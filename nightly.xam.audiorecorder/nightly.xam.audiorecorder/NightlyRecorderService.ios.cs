@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AVFoundation;
 using Foundation;
+using nightly.xam.audiorecorder.Exceptions;
 
 namespace nightly.xam.audiorecorder
 {
@@ -17,13 +18,13 @@ namespace nightly.xam.audiorecorder
         public bool IsRecording => this._recorder?.Recording ?? false; 
 
 
-        public Task<Stream> StartAsync()
+        public Task<Stream> RecordAsync()
         {
             if (this.IsRecording)
                 throw new Exception("Service already recording.");
             
             this.InitializeRecordService();
-            this._recorder.Record ();
+            this._recorder.Record();
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;
         }
@@ -33,16 +34,16 @@ namespace nightly.xam.audiorecorder
             if (!this.IsRecording || this._recorder == null)
                 return;
         
-            this._recorder.Stop ();
+            this._recorder.Stop();
 
             using (var streamReader = new StreamReader(this._path))
             {
                 var memstream = new MemoryStream(); 
-                streamReader.BaseStream.CopyTo (memstream);
+                streamReader.BaseStream.CopyTo(memstream);
                 this._recordTask.TrySetResult(memstream);
             }
 
-            //File.Delete(this._path);
+            File.Delete(this._path);
         }
 
         private void InitializeRecordService()
@@ -50,25 +51,22 @@ namespace nightly.xam.audiorecorder
             var audioSession = AVAudioSession.SharedInstance ();
             var err = audioSession.SetCategory (AVAudioSessionCategory.PlayAndRecord);
             if (err != null)
-                throw new Exception(err.Code.ToString());
+                throw new RecorderNativeException(err, err.LocalizedFailureReason);
             
-            err = audioSession.SetActive (true);
+            err = audioSession.SetActive(true);
             
-            if (err != null )
-                throw new Exception(err.Code.ToString());
+            if (err != null)
+                throw new RecorderNativeException(err, err.LocalizedFailureReason);
 
-
-            //Declare string for application temp path and tack on the file extension
             var path = Path.GetTempPath();
 
-            var fileName = string.Format ("audio{0}.mp4", DateTime.Now.ToString ("yyyyMMddHHmmss"));
+            var fileName = $"audio{DateTime.Now:yyyyMMddHHmmss}.mp4";
             var audioFilePath = Path.Combine (path, fileName);
 
             Console.WriteLine("Audio File Path: " + audioFilePath);
             this._path = audioFilePath;
 
             this._url = NSUrl.FromFilename(audioFilePath);
-            //set up the NSObject Array of values that will be combined with the keys to make the NSDictionary
             NSObject[] values = 
             {
                 NSNumber.FromFloat (12000.0f), //Sample Rate
@@ -79,7 +77,6 @@ namespace nightly.xam.audiorecorder
                 NSNumber.FromBoolean (false) //IsFloatKey
             };
 
-            //Set up the NSObject Array of keys that will be combined with the values to make the NSDictionary
             NSObject[] keys = 
             {
                 AVAudioSettings.AVSampleRateKey,
@@ -90,15 +87,12 @@ namespace nightly.xam.audiorecorder
                 AVAudioSettings.AVLinearPCMIsFloatKey
             };
 
-            //Set Settings with the Values and Keys to create the NSDictionary
             this._settings = NSDictionary.FromObjectsAndKeys (values, keys);
-
-            //Set recorder parameters
             this._recorder = AVAudioRecorder.Create(this._url, new AudioSettings(this._settings), out var error);
             
-            // todo check error
+            if(error != null)
+                throw new RecorderNativeException(error, error.LocalizedFailureReason);
 
-            //Set Recorder to Prepare To Record
             var ready = this._recorder.PrepareToRecord();
             if (!ready)
                 throw new Exception("PrepareToRecord() returned false");

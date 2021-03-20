@@ -2,19 +2,19 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Android.Media;
+using Java.Interop;
+using nightly.xam.audiorecorder.Exceptions;
 using Stream = System.IO.Stream;
 
 namespace nightly.xam.audiorecorder
 {
-    public partial class NightlyRecorderService : IRecorder 
+    public partial class NightlyRecorderService : IRecorder
     {
-        string _filePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+        private string _filePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
             "mic_record.mp4");
 
-        MediaRecorder _recorder;
+        private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
-
-        
         public bool IsRecording { get; private set; }
 
         private void StartRecorder()
@@ -24,11 +24,11 @@ namespace nightly.xam.audiorecorder
                 if (File.Exists(this._filePath))
                     File.Delete(this._filePath);
 
-                Java.IO.File myFile = new Java.IO.File(this._filePath);
+                var myFile = new Java.IO.File(this._filePath);
                 myFile.CreateNewFile();
 
                 if (this._recorder == null)
-                    this._recorder = new MediaRecorder(); 
+                    this._recorder = new MediaRecorder();
                 else
                     this._recorder.Reset();
 
@@ -39,27 +39,32 @@ namespace nightly.xam.audiorecorder
                 this._recorder.Prepare();
                 this._recorder.Start();
             }
-            catch (Exception e)
+            catch (JavaException e)
             {
-                Console.WriteLine(e);
-                throw;
+                throw new RecorderNativeException(e, e.Message);
             }
-           
         }
 
         private void StopRecorder()
         {
-            if (this._recorder != null)
+            try
             {
-                this._recorder.Stop();
-                this._recorder.Release();
-                this._recorder = null;
-            }
+                if (this._recorder != null)
+                {
+                    this._recorder.Stop();
+                    this._recorder.Release();
+                    this._recorder = null;
+                }
 
-            this.IsRecording = false;
+                this.IsRecording = false;
+            }
+            catch (JavaException e)
+            {
+                throw new RecorderNativeException(e, e.Message);
+            }
         }
 
-        public Task<Stream> StartAsync()
+        public Task<Stream> RecordAsync()
         {
             this.IsRecording = true;
             this.StartRecorder();
@@ -72,9 +77,7 @@ namespace nightly.xam.audiorecorder
         {
             this.StopRecorder();
             var stream = !File.Exists(this._filePath) ? null : File.OpenRead(this._filePath);
-            this._recordTask.TrySetResult(stream); 
+            this._recordTask.TrySetResult(stream);
         }
-
-
     }
 }
