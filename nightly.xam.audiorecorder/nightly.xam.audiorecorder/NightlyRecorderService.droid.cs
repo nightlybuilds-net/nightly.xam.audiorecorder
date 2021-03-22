@@ -77,6 +77,7 @@ namespace nightly.xam.audiorecorder
         {
             this.StopRecorder();
             var stream = !File.Exists(this._filePath) ? null : File.OpenRead(this._filePath);
+            stream?.Seek(0, SeekOrigin.Begin);
             this._recordTask.TrySetResult(stream);
         }
     }

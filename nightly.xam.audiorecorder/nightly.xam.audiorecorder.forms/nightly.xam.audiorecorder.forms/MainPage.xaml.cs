@@ -24,7 +24,7 @@ namespace nightly.xam.audiorecorder.forms
             this.PlayBtn.IsEnabled = false;
             this.RecordBtn.IsEnabled = false;
 
-            var streamFile = await this._recordService.StartAsync();
+            var streamFile = await this._recordService.RecordAsync();
             this._stream = streamFile;
         }
 
