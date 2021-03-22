@@ -1,0 +1,33 @@
+name: .NET
+
+on:
+ release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet pack nightly.xam.audiorecorder/nightly.xam.audiorecorder/nightly.xam.audiorecorder.csproj --configuration Release --no-restore /p:Version=${GITHUB_REF##*/} 
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: mjm.nethelpers
+        # Directory containing files to upload
+        path: nightly.xam.audiorecorder/nightly.xam.audiorecorder/bin/Release
+    
+    - name: Push to nuget
+      run: dotnet nuget push nightly.xam.audiorecorder/nightly.xam.audiorecorder/bin/Release/nightly.xam.audiorecorder.${GITHUB_REF##*/}.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+   
