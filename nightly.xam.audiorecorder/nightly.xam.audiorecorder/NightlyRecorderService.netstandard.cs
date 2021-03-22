@@ -6,7 +6,7 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder 
     {
-        public Task<Stream> StartAsync()
+        public Task<Stream> RecordAsync()
         {
             throw new System.NotImplementedException();
         }

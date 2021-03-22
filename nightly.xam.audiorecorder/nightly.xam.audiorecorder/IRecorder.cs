@@ -9,7 +9,7 @@ namespace nightly.xam.audiorecorder
         /// Start registration
         /// </summary>
         /// <returns></returns>
-        Task<Stream> StartAsync ();
+        Task<Stream> RecordAsync ();
 
         /// <summary>
         /// Stop registration
