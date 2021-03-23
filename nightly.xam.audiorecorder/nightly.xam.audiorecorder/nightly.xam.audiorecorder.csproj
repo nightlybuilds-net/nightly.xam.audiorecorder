@@ -3,6 +3,22 @@
         <TargetFrameworks>netstandard2.0;xamarinios10;monoandroid10.0;</TargetFrameworks>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU;IPhoneSimulator</Platforms>
+        <AssemblyName>nightly.xam.audiorecorder</AssemblyName>
+        <RootNamespace>nightly.xam.audiorecorder</RootNamespace>
+        <PackageId>nightly.xam.audiorecorder</PackageId>
+        <Summary>nightly.xam.audiorecorder: a simple cross platform library for record compressed audio.</Summary>
+        <PackageTags>xamarin, ios, android,xamarin.forms, nightly.xam.audiorecorder,audio, recorder</PackageTags>
+        <Title>nightly.xam.audiorecorder</Title>
+        <Description>nightly.xam.audiorecorder: a simple cross platform library for record compressed audio.</Description>
+        <Product>$(AssemblyName) ($(TargetFramework))</Product>
+        <PackageVersion>0.1.0</PackageVersion>
+        <Authors>Nightly Builds</Authors>
+        <Owners>Nightly Builds</Owners>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Copyright>© Nightly Builds</Copyright>
+        <RepositoryUrl>https://github.com/nightlybuilds-net/nightly.xam.audiorecorder</RepositoryUrl>
+        <UseFullSemVerForNuGet>true</UseFullSemVerForNuGet>
+        <PackageProjectUrl>https://github.com/nightlybuilds-net/nightly.xam.audiorecorder</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>

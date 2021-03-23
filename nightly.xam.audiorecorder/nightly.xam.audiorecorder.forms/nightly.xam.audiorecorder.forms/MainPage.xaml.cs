@@ -10,7 +10,7 @@ namespace nightly.xam.audiorecorder.forms
 {
     public partial class MainPage : ContentPage
     {
-        private NightlyRecorderService _recordService;
+        private readonly NightlyRecorderService _recordService;
         private Stream _stream;
 
         public MainPage()
@@ -19,8 +19,11 @@ namespace nightly.xam.audiorecorder.forms
             this._recordService = new NightlyRecorderService();
         }
 
-        private async void Button_OnClicked(object sender, EventArgs e)
+        private async void RecordButton_OnClicked(object sender, EventArgs e)
         {
+            this.PlayBtn.IsEnabled = false;
+            this.RecordBtn.IsEnabled = false;
+
             var streamFile = await this._recordService.RecordAsync();
             this._stream = streamFile;
         }
@@ -28,6 +31,8 @@ namespace nightly.xam.audiorecorder.forms
         private void StopButton_OnClicked(object sender, EventArgs e)
         {
             this._recordService.Stop();
+            this.PlayBtn.IsEnabled = true;
+            this.RecordBtn.IsEnabled = true;
         }
 
         private void PlayButton_OnClicked(object sender, EventArgs e)

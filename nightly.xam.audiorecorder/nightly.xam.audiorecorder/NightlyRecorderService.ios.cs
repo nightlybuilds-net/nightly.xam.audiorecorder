@@ -40,6 +40,7 @@ namespace nightly.xam.audiorecorder
             {
                 var memstream = new MemoryStream(); 
                 streamReader.BaseStream.CopyTo(memstream);
+                memstream.Seek(0, SeekOrigin.Begin);
                 this._recordTask.TrySetResult(memstream);
             }
 

@@ -1,25 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:nightly.xam.audiorecorder.forms"
-             x:Class="nightly.xam.audiorecorder.forms.MainPage">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:nightly.xam.audiorecorder.forms"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    x:Class="nightly.xam.audiorecorder.forms.MainPage">
 
     <StackLayout>
         <!-- Place new controls here -->
-        <Label Text="Welcome to Nightly AudioRecorder" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        
+        <Label Text="Welcome to Nightly AudioRecorder"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" />
+
         <Button
-            Clicked="Button_OnClicked"
-            Text="Start"/>
+            x:Name="RecordBtn"
+            Clicked="RecordButton_OnClicked"
+            Text="Start" />
         <Button
+            x:Name="StopBtn"
             Clicked="StopButton_OnClicked"
-            Text="Stop"/>
+            Text="Stop" />
         <Button
+            x:Name="PlayBtn"
             Clicked="PlayButton_OnClicked"
-            Text="Play"/>
-        
+            Text="Play" />
+
     </StackLayout>
 
 </ContentPage>
