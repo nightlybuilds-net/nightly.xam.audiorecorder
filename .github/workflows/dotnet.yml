@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore nightly.xam.audiorecorder/nightly.xam.audiorecorder/nightly.xam.audiorecorder.csproj
     - name: Build
       run: dotnet pack nightly.xam.audiorecorder/nightly.xam.audiorecorder/nightly.xam.audiorecorder.csproj --configuration Release --no-restore /p:Version=${GITHUB_REF##*/} 
     
