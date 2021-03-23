@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Android.Media;
 using Java.Interop;
 using nightly.xam.audiorecorder.Exceptions;
+using nightly.xam.audiorecorder.Shared;
 using Stream = System.IO.Stream;
 
 namespace nightly.xam.audiorecorder
@@ -16,6 +17,11 @@ namespace nightly.xam.audiorecorder
         private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
         public bool IsRecording { get; private set; }
+        
+        public NightlyRecorderService(RecordFormat format)
+        {
+            
+        }
 
         private void StartRecorder()
         {

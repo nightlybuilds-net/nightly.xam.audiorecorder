@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace nightly.xam.audiorecorder
+namespace nightly.xam.audiorecorder.Shared
 {
     public interface IRecorder
     {
@@ -9,18 +9,16 @@ namespace nightly.xam.audiorecorder
         /// Start registration
         /// </summary>
         /// <returns></returns>
-        Task<Stream> RecordAsync ();
+        Task<Stream> RecordAsync();
 
         /// <summary>
         /// Stop registration
         /// </summary>
-        void Stop ();
-        
+        void Stop();
+
         /// <summary>
         /// Is recording
         /// </summary>
         bool IsRecording { get; }
-
-       
     }
 }
