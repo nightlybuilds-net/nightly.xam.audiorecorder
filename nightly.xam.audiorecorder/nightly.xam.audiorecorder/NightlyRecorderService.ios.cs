@@ -12,25 +12,25 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private readonly RecordFormat _recordFormat;
-        private readonly RecordQuality _quality;
+        private readonly RecorderSettings _settings;
         private AVAudioRecorder _recorder;
         private NSUrl _url;
-        private readonly string _path;
+        private string _path;
         private TaskCompletionSource<Stream> _recordTask;
 
         public bool IsRecording => this._recorder?.Recording ?? false;
-        
 
-        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
+
+        public NightlyRecorderService()
         {
-            this._recordFormat = format;
-            this._quality = quality;
+            this._settings = RecorderSettings.Default;
+            this.InitTempFilePath();
+        }
 
-            // init a temp file
-            var path = Path.GetTempPath();
-            var audioFilePath = Path.Combine(path, Guid.NewGuid().ToString("N"));
-            this._path = audioFilePath;
+        public NightlyRecorderService(RecorderSettings settings) 
+        {
+            this._settings = settings;
+            this.InitTempFilePath();
         }
 
         public Task<Stream> RecordAsync()
@@ -98,18 +98,26 @@ namespace nightly.xam.audiorecorder
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         private AudioSettings GetAudioSettings()
         {
-            var mapper = new Dictionary<RecordFormat, AudioFormatType>
+            var mapper = new Dictionary<IosRecordFormat, AudioFormatType>
             {
-                {RecordFormat.Antani,AudioFormatType.Flac},
-                {RecordFormat.Mp4Aac,AudioFormatType.MPEG4AAC},
+                {IosRecordFormat.Flac,AudioFormatType.Flac},
+                {IosRecordFormat.Mp4Aac,AudioFormatType.MPEG4AAC},
             };
             
             return new AudioSettings
             {
-                Format = mapper[this._recordFormat],
+                Format = mapper[this._settings.IosRecordFormat],
                 NumberChannels = 1,
-                SampleRate = (int)this._quality,
+                SampleRate = (int)this._settings.RecordQuality,
             };
+        }
+        
+        private void InitTempFilePath()
+        {
+            // init a temp file
+            var path = Path.GetTempPath();
+            var audioFilePath = Path.Combine(path, Guid.NewGuid().ToString("N"));
+            this._path = audioFilePath;
         }
 
         public void Dispose()

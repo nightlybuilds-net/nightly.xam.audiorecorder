@@ -1,8 +1,8 @@
 namespace nightly.xam.audiorecorder.Shared
 {
-    public enum RecordFormat
+    public enum IosRecordFormat
     {
        Mp4Aac,
-       Antani
+       Flac
     }
 }

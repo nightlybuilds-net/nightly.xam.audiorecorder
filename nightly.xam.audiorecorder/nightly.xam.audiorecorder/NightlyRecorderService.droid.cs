@@ -11,18 +11,23 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private readonly RecordFormat _recordFormat;
-        private readonly RecordQuality _quality;
+        private readonly RecorderSettings _settings;
+      
 
         private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
         private readonly string _filePath;
         public bool IsRecording { get; private set; }
-        
-        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
+
+        public NightlyRecorderService()
         {
-            this._recordFormat = format;
-            this._quality = quality;
+            this._settings = RecorderSettings.Default;
+            this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        }
+        
+        public NightlyRecorderService(RecorderSettings settings)
+        {
+            this._settings = settings;
             this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         }
 
@@ -42,7 +47,7 @@ namespace nightly.xam.audiorecorder
                     this._recorder.Reset();
 
                 this._recorder.SetAudioSource(AudioSource.Mic);
-                this.SetupRecorderFor(this._recordFormat, (int)this._quality);
+                this.SetupRecorderFor(this._settings.DroidRecordFormat, (int)this._settings.RecordQuality);
                 this._recorder.SetOutputFile(this._filePath);
                 this._recorder.Prepare();
                 this._recorder.Start();
@@ -53,15 +58,15 @@ namespace nightly.xam.audiorecorder
             }
         }
 
-        private void SetupRecorderFor(RecordFormat format, int sampleRate)
+        private void SetupRecorderFor(DroidRecordFormat format, int sampleRate)
         {
             switch (format)
             {
-                case RecordFormat.Antani:
+                case DroidRecordFormat.Antani:
                     this._recorder.SetOutputFormat(OutputFormat.Webm);
                     this._recorder.SetAudioEncoder(AudioEncoder.Default);
                     break;
-                case RecordFormat.Mp4Aac:
+                case DroidRecordFormat.Mp4Aac:
                     this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
                     this._recorder.SetAudioEncoder(AudioEncoder.Aac);
                     this._recorder.SetAudioSamplingRate(sampleRate);

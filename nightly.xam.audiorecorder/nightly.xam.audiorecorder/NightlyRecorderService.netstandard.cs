@@ -8,7 +8,12 @@ namespace nightly.xam.audiorecorder
     public partial class NightlyRecorderService : IRecorder 
     {
 
-        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
+        public NightlyRecorderService()
+        {
+            
+        }
+
+        public NightlyRecorderService(RecorderSettings settings)
         {
         }
         
