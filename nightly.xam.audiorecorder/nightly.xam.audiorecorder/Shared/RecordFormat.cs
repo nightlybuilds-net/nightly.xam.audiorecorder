@@ -2,7 +2,6 @@ namespace nightly.xam.audiorecorder.Shared
 {
     public enum RecordFormat
     {
-        Wav,
-        Mp4
+       Mp4Aac
     }
 }

@@ -12,7 +12,7 @@ namespace nightly.xam.audiorecorder
             
         }
         
-        public Task<Stream> RecordAsync()
+        public Task<Stream> RecordAsync(int sampleRate = 44100)
         {
             throw new System.NotImplementedException();
         }
@@ -23,6 +23,9 @@ namespace nightly.xam.audiorecorder
         }
 
         public bool IsRecording => throw new NotImplementedException();
-       
+
+        public void Dispose()
+        {
+        }
     }
 }

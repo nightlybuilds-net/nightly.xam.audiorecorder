@@ -11,25 +11,26 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private string _filePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-            "mic_record.mp4");
-
+        private readonly RecordFormat _recordFormat;
+        
         private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
+        private readonly string _filePath;
         public bool IsRecording { get; private set; }
         
-        public NightlyRecorderService(RecordFormat format)
+        public NightlyRecorderService(RecordFormat recordFormat)
         {
-            
+            this._recordFormat = recordFormat;
+            this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         }
 
-        private void StartRecorder()
+        private void StartRecorder(int sampleRate)
         {
             try
             {
-                if (File.Exists(this._filePath))
+                if(File.Exists(this._filePath))
                     File.Delete(this._filePath);
-
+                
                 var myFile = new Java.IO.File(this._filePath);
                 myFile.CreateNewFile();
 
@@ -39,8 +40,7 @@ namespace nightly.xam.audiorecorder
                     this._recorder.Reset();
 
                 this._recorder.SetAudioSource(AudioSource.Mic);
-                this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
-                this._recorder.SetAudioEncoder(AudioEncoder.AmrNb);
+                this.SetupRecorderFor(this._recordFormat, sampleRate);
                 this._recorder.SetOutputFile(this._filePath);
                 this._recorder.Prepare();
                 this._recorder.Start();
@@ -50,6 +50,26 @@ namespace nightly.xam.audiorecorder
                 throw new RecorderNativeException(e, e.Message);
             }
         }
+
+        private void SetupRecorderFor(RecordFormat format, int sampleRate)
+        {
+            switch (format)
+            {
+                // case RecordFormat.Aac:
+                //     this._recorder.SetOutputFormat(OutputFormat.Ogg);
+                //     this._recorder.SetAudioEncoder(AudioEncoder.Default);
+                //     break;
+                case RecordFormat.Mp4Aac:
+                    this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
+                    this._recorder.SetAudioEncoder(AudioEncoder.Aac);
+                    this._recorder.SetAudioSamplingRate(sampleRate);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+       
 
         private void StopRecorder()
         {
@@ -70,10 +90,10 @@ namespace nightly.xam.audiorecorder
             }
         }
 
-        public Task<Stream> RecordAsync()
+        public Task<Stream> RecordAsync(int sampleRate = 44100)
         {
             this.IsRecording = true;
-            this.StartRecorder();
+            this.StartRecorder(sampleRate);
 
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;
@@ -85,6 +105,13 @@ namespace nightly.xam.audiorecorder
             var stream = !File.Exists(this._filePath) ? null : File.OpenRead(this._filePath);
             stream?.Seek(0, SeekOrigin.Begin);
             this._recordTask.TrySetResult(stream);
+            
+            File.Delete(this._filePath);
+        }
+
+        public void Dispose()
+        {
+            this._recorder?.Dispose();
         }
     }
 }
