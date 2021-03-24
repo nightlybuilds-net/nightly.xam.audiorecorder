@@ -47,7 +47,7 @@ namespace nightly.xam.audiorecorder
                     this._recorder.Reset();
 
                 this._recorder.SetAudioSource(AudioSource.Mic);
-                this.SetupRecorderFor(this._settings.DroidRecordFormat, (int)this._settings.RecordQuality);
+                this.SetupRecorderFor(this._settings.DroidRecordFormat);
                 this._recorder.SetOutputFile(this._filePath);
                 this._recorder.Prepare();
                 this._recorder.Start();
@@ -58,22 +58,39 @@ namespace nightly.xam.audiorecorder
             }
         }
 
-        private void SetupRecorderFor(DroidRecordFormat format, int sampleRate)
+        private void SetupRecorderFor(DroidRecordFormat format)
         {
             switch (format)
             {
-                case DroidRecordFormat.Antani:
-                    this._recorder.SetOutputFormat(OutputFormat.Webm);
-                    this._recorder.SetAudioEncoder(AudioEncoder.Default);
+                case DroidRecordFormat.ThreeGpAcc:
+                    this._recorder.SetOutputFormat(OutputFormat.ThreeGpp);
+                    this._recorder.SetAudioEncoder(AudioEncoder.Aac);
+                    //this._recorder.SetAudioSamplingRate(sampleRate);
                     break;
                 case DroidRecordFormat.Mp4Aac:
                     this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
                     this._recorder.SetAudioEncoder(AudioEncoder.Aac);
-                    this._recorder.SetAudioSamplingRate(sampleRate);
+                    //this._recorder.SetAudioSamplingRate(sampleRate);
+                    break;
+                case DroidRecordFormat.Mp4HeAac:
+                    this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
+                    this._recorder.SetAudioEncoder(AudioEncoder.HeAac);
+                    //this._recorder.SetAudioSamplingRate(sampleRate);
+                    break;
+                case DroidRecordFormat.Mp4Vorbis:
+                    this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
+                    this._recorder.SetAudioEncoder(AudioEncoder.Vorbis);
+                    //this._recorder.SetAudioSamplingRate(sampleRate);
+                    break;
+                case DroidRecordFormat.OggOpus:
+                    this._recorder.SetOutputFormat(OutputFormat.Ogg);
+                    this._recorder.SetAudioEncoder(AudioEncoder.Opus);
+                    // sample rate omitted because of weird results
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
         }
 
         private void StopRecorder()

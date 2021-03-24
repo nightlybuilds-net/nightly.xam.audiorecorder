@@ -102,13 +102,16 @@ namespace nightly.xam.audiorecorder
             {
                 {IosRecordFormat.Flac,AudioFormatType.Flac},
                 {IosRecordFormat.Mp4Aac,AudioFormatType.MPEG4AAC},
+                {IosRecordFormat.Mp4HeAac,AudioFormatType.MPEG4AAC_HE},
+                {IosRecordFormat.AppleLossLess,AudioFormatType.AppleLossless},
             };
             
             return new AudioSettings
             {
                 Format = mapper[this._settings.IosRecordFormat],
                 NumberChannels = 1,
-                SampleRate = (int)this._settings.RecordQuality,
+                AudioQuality = AVAudioQuality.Medium
+                //SampleRate = (int)this._settings.RecordQuality,
             };
         }
         

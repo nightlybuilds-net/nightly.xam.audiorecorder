@@ -17,7 +17,11 @@ namespace nightly.xam.audiorecorder.forms
         public MainPage()
         {
             this.InitializeComponent();
-            this._recordService = new NightlyRecorderService();
+            this._recordService = new NightlyRecorderService(new RecorderSettings
+            {
+                DroidRecordFormat = DroidRecordFormat.OggOpus,
+                IosRecordFormat = IosRecordFormat.Mp4Aac
+            });
         }
 
         private async void RecordButton_OnClicked(object sender, EventArgs e)
@@ -31,7 +35,7 @@ namespace nightly.xam.audiorecorder.forms
             this._stream = streamFile;
             
             // var path = Path.GetTempPath();
-            // var filePath = Path.Combine(path, "eccolo.flac");
+            // var filePath = Path.Combine(path, "eccolo.ogg");
             // if(File.Exists(filePath))
             //     File.Delete(filePath);
             //
