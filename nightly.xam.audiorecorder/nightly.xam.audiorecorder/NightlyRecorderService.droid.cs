@@ -12,19 +12,21 @@ namespace nightly.xam.audiorecorder
     public partial class NightlyRecorderService : IRecorder
     {
         private readonly RecordFormat _recordFormat;
-        
+        private readonly RecordQuality _quality;
+
         private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
         private readonly string _filePath;
         public bool IsRecording { get; private set; }
         
-        public NightlyRecorderService(RecordFormat recordFormat)
+        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
         {
-            this._recordFormat = recordFormat;
+            this._recordFormat = format;
+            this._quality = quality;
             this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         }
 
-        private void StartRecorder(int sampleRate)
+        private void StartRecorder()
         {
             try
             {
@@ -40,7 +42,7 @@ namespace nightly.xam.audiorecorder
                     this._recorder.Reset();
 
                 this._recorder.SetAudioSource(AudioSource.Mic);
-                this.SetupRecorderFor(this._recordFormat, sampleRate);
+                this.SetupRecorderFor(this._recordFormat, (int)this._quality);
                 this._recorder.SetOutputFile(this._filePath);
                 this._recorder.Prepare();
                 this._recorder.Start();
@@ -55,10 +57,10 @@ namespace nightly.xam.audiorecorder
         {
             switch (format)
             {
-                // case RecordFormat.Aac:
-                //     this._recorder.SetOutputFormat(OutputFormat.Ogg);
-                //     this._recorder.SetAudioEncoder(AudioEncoder.Default);
-                //     break;
+                case RecordFormat.Antani:
+                    this._recorder.SetOutputFormat(OutputFormat.Webm);
+                    this._recorder.SetAudioEncoder(AudioEncoder.Default);
+                    break;
                 case RecordFormat.Mp4Aac:
                     this._recorder.SetOutputFormat(OutputFormat.Mpeg4);
                     this._recorder.SetAudioEncoder(AudioEncoder.Aac);
@@ -68,8 +70,6 @@ namespace nightly.xam.audiorecorder
                     throw new ArgumentOutOfRangeException();
             }
         }
-
-       
 
         private void StopRecorder()
         {
@@ -90,10 +90,10 @@ namespace nightly.xam.audiorecorder
             }
         }
 
-        public Task<Stream> RecordAsync(int sampleRate = 44100)
+        public Task<Stream> RecordAsync()
         {
             this.IsRecording = true;
-            this.StartRecorder(sampleRate);
+            this.StartRecorder();
 
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;

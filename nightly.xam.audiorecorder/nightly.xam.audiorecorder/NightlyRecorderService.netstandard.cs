@@ -7,12 +7,12 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder 
     {
-        public NightlyRecorderService(RecordFormat format)
+
+        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
         {
-            
         }
         
-        public Task<Stream> RecordAsync(int sampleRate = 44100)
+        public Task<Stream> RecordAsync()
         {
             throw new System.NotImplementedException();
         }

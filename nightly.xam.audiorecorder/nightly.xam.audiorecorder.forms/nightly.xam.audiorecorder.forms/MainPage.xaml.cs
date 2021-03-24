@@ -17,7 +17,7 @@ namespace nightly.xam.audiorecorder.forms
         public MainPage()
         {
             this.InitializeComponent();
-            this._recordService = new NightlyRecorderService(RecordFormat.Mp4Aac);
+            this._recordService = new NightlyRecorderService(RecordFormat.Antani, RecordQuality.High);
         }
 
         private async void RecordButton_OnClicked(object sender, EventArgs e)
@@ -30,13 +30,13 @@ namespace nightly.xam.audiorecorder.forms
             var streamFile = await this._recordService.RecordAsync();
             this._stream = streamFile;
             
-            // var path = Path.GetTempPath();
-            // var filePath = Path.Combine(path, "eccolo.mp4");
-            // if(File.Exists(filePath))
-            //     File.Delete(filePath);
+            var path = Path.GetTempPath();
+            var filePath = Path.Combine(path, "eccolo.flac");
+            if(File.Exists(filePath))
+                File.Delete(filePath);
             
-            // using (var fileStream = new FileStream(filePath, FileMode.Create))
-            //     await streamFile.CopyToAsync(fileStream);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                await streamFile.CopyToAsync(fileStream);
         }
 
         private void StopButton_OnClicked(object sender, EventArgs e)
@@ -57,6 +57,12 @@ namespace nightly.xam.audiorecorder.forms
             this._stream.Seek(0, SeekOrigin.Begin);
             player.Load(this._stream);
             player.Play();
+        }
+
+        protected override void OnDisappearing()
+        {
+            this._recordService.Dispose();
+            base.OnDisappearing();
         }
     }
 }

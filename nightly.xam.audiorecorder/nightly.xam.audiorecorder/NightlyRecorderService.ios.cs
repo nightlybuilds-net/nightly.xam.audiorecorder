@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AudioToolbox;
@@ -12,6 +13,7 @@ namespace nightly.xam.audiorecorder
     public partial class NightlyRecorderService : IRecorder
     {
         private readonly RecordFormat _recordFormat;
+        private readonly RecordQuality _quality;
         private AVAudioRecorder _recorder;
         private NSUrl _url;
         private readonly string _path;
@@ -20,9 +22,10 @@ namespace nightly.xam.audiorecorder
         public bool IsRecording => this._recorder?.Recording ?? false;
         
 
-        public NightlyRecorderService(RecordFormat recordFormat)
+        public NightlyRecorderService(RecordFormat format = RecordFormat.Mp4Aac, RecordQuality quality = RecordQuality.Medium)
         {
-            this._recordFormat = recordFormat;
+            this._recordFormat = format;
+            this._quality = quality;
 
             // init a temp file
             var path = Path.GetTempPath();
@@ -30,12 +33,12 @@ namespace nightly.xam.audiorecorder
             this._path = audioFilePath;
         }
 
-        public Task<Stream> RecordAsync(int sampleRate = 44100)
+        public Task<Stream> RecordAsync()
         {
             if (this.IsRecording)
                 throw new Exception("Service already recording.");
 
-            this.InitializeRecordService(sampleRate);
+            this.InitializeRecordService();
             this._recorder.Record();
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;
@@ -60,7 +63,7 @@ namespace nightly.xam.audiorecorder
             File.Delete(this._path);
         }
 
-        private void InitializeRecordService(int bitRate)
+        private void InitializeRecordService()
         {
             var audioSession = AVAudioSession.SharedInstance();
             var err = audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord);
@@ -73,7 +76,7 @@ namespace nightly.xam.audiorecorder
                 throw new RecorderNativeException(err, err.LocalizedFailureReason);
 
             this._url = NSUrl.FromFilename(this._path);
-            var settings = this.GetAudioSettings(bitRate);
+            var settings = this.GetAudioSettings();
 
             if (this._recorder == null)
             {
@@ -91,22 +94,22 @@ namespace nightly.xam.audiorecorder
         /// <summary>
         /// Retrieve audio settins for used audio format type
         /// </summary>
-        /// <param name="sampleRate"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private AudioSettings GetAudioSettings(int sampleRate)
+        private AudioSettings GetAudioSettings()
         {
-            if (this._recordFormat == RecordFormat.Mp4Aac)
+            var mapper = new Dictionary<RecordFormat, AudioFormatType>
             {
-                return new AudioSettings
-                {
-                    Format = AudioFormatType.MPEG4AAC,
-                    NumberChannels = 1,
-                    SampleRate = sampleRate,
-                };
-            }
-
-            throw new NotImplementedException();
+                {RecordFormat.Antani,AudioFormatType.Flac},
+                {RecordFormat.Mp4Aac,AudioFormatType.MPEG4AAC},
+            };
+            
+            return new AudioSettings
+            {
+                Format = mapper[this._recordFormat],
+                NumberChannels = 1,
+                SampleRate = (int)this._quality,
+            };
         }
 
         public void Dispose()
