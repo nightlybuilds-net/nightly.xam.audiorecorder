@@ -19,9 +19,9 @@ namespace nightly.xam.audiorecorder.forms
             this.InitializeComponent();
             this._recordService = new NightlyRecorderService(new RecorderSettings
             {
-                DroidRecordFormat = DroidRecordFormat.OggOpus,
-                IosRecordFormat = IosRecordFormat.Mp4Aac
+                IosRecorderSettings = new Mp4Aar()
             });
+
         }
 
         private async void RecordButton_OnClicked(object sender, EventArgs e)

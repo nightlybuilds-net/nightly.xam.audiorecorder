@@ -15,8 +15,9 @@ namespace nightly.xam.audiorecorder
 
         public NightlyRecorderService(RecorderSettings settings)
         {
+            
         }
-        
+
         public Task<Stream> RecordAsync()
         {
             throw new System.NotImplementedException();

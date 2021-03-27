@@ -12,22 +12,15 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private readonly RecorderSettings _settings;
         private AVAudioRecorder _recorder;
         private NSUrl _url;
         private string _path;
         private TaskCompletionSource<Stream> _recordTask;
+        private RecorderSettings _settings;
 
         public bool IsRecording => this._recorder?.Recording ?? false;
 
-
-        public NightlyRecorderService()
-        {
-            this._settings = RecorderSettings.Default;
-            this.InitTempFilePath();
-        }
-
-        public NightlyRecorderService(RecorderSettings settings) 
+        public NightlyRecorderService(RecorderSettings settings)
         {
             this._settings = settings;
             this.InitTempFilePath();
@@ -98,19 +91,23 @@ namespace nightly.xam.audiorecorder
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         private AudioSettings GetAudioSettings()
         {
-            var mapper = new Dictionary<IosRecordFormat, AudioFormatType>
-            {
-                {IosRecordFormat.Flac,AudioFormatType.Flac},
-                {IosRecordFormat.Mp4Aac,AudioFormatType.MPEG4AAC},
-                {IosRecordFormat.Mp4HeAac,AudioFormatType.MPEG4AAC_HE},
-                {IosRecordFormat.AppleLossLess,AudioFormatType.AppleLossless},
-            };
-            
             return new AudioSettings
             {
-                Format = mapper[this._settings.IosRecordFormat],
-                NumberChannels = 1,
-                AudioQuality = AVAudioQuality.Medium
+                Format = (AudioFormatType?)this._settings.IosRecorderSettings.AudioFormat,
+                NumberChannels = this._settings.IosRecorderSettings.NumberChannels,
+                AudioQuality = (AVAudioQuality?)this._settings.IosRecorderSettings.AudioQuality,
+                SampleRate = this._settings.IosRecorderSettings.SampleRate,
+                // BitRateStrategy = ,
+                EncoderBitRate = this._settings.IosRecorderSettings.EncoderBitRate,
+                LinearPcmFloat = this._settings.IosRecorderSettings.LinearPcmFloat,
+                EncoderBitDepthHint = this._settings.IosRecorderSettings.EncoderBitDepthHint,
+                LinearPcmBigEndian = this._settings.IosRecorderSettings.LinearPcmBigEndian,
+                LinearPcmBitDepth = this._settings.IosRecorderSettings.LinearPcmBitDepth,
+                LinearPcmNonInterleaved = this._settings.IosRecorderSettings.LinearPcmNonInterleaved,
+                // SampleRateConverterAlgorithm = (AVAudioQuality?)this._settingsNew.IosRecorderSettings.SampleRateConverterAudioQuality,
+                EncoderBitRatePerChannel = this._settings.IosRecorderSettings.EncoderBitRatePerChannel,
+                SampleRateConverterAudioQuality = (AVAudioQuality?)this._settings.IosRecorderSettings.SampleRateConverterAudioQuality,
+                // EncoderAudioQualityForVBR = this._settingsNew.IosRecorderSettings.vb,
                 //SampleRate = (int)this._settings.RecordQuality,
             };
         }

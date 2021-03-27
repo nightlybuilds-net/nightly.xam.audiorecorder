@@ -11,8 +11,6 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private readonly RecorderSettings _settings;
-      
 
         private MediaRecorder _recorder;
         private TaskCompletionSource<Stream> _recordTask;
@@ -21,16 +19,11 @@ namespace nightly.xam.audiorecorder
 
         public NightlyRecorderService()
         {
-            this._settings = RecorderSettings.Default;
+            // this._settingsOld = RecorderSettingsOld.Default;
             this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         }
         
-        public NightlyRecorderService(RecorderSettings settings)
-        {
-            this._settings = settings;
-            this._filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-        }
-
+      
         private void StartRecorder()
         {
             try
@@ -47,7 +40,7 @@ namespace nightly.xam.audiorecorder
                     this._recorder.Reset();
 
                 this._recorder.SetAudioSource(AudioSource.Mic);
-                this.SetupRecorderFor(this._settings.DroidRecordFormat);
+                // this.SetupRecorderFor(this._settingsOld.DroidRecordFormat);
                 this._recorder.SetOutputFile(this._filePath);
                 this._recorder.Prepare();
                 this._recorder.Start();
