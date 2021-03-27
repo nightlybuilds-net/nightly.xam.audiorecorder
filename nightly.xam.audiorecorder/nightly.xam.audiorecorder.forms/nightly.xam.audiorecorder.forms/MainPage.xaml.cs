@@ -19,7 +19,7 @@ namespace nightly.xam.audiorecorder.forms
             this.InitializeComponent();
             this._recordService = new NightlyRecorderService(new RecorderSettings
             {
-                IosRecorderSettings = new Mp4Aar()
+                IosRecorderSettings = new Mp4Aar().WithSampleRate(12000)
             });
 
         }

@@ -1,4 +1,4 @@
-namespace nightly.xam.audiorecorder.Ios
+namespace nightly.xam.audiorecorder.Shared
 {
     public enum IosAudioQuality
     {
