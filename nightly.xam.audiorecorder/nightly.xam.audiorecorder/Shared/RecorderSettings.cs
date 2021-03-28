@@ -1,44 +1,20 @@
+using nightly.xam.audiorecorder.Shared.Droid;
+using nightly.xam.audiorecorder.Shared.Ios;
+
 namespace nightly.xam.audiorecorder.Shared
 {
     public class RecorderSettings
     {
         public IIosRecorderSettings IosRecorderSettings { get; set; }
-        // public IIosRecorderSettings DroidRecorderSettings { get; set; }
-    }
+        public IDroidRecorderSettings DroidRecorderSettings { get; set; }
 
-    public interface IIosRecorderSettings
-    {
-        IosAudioFormat AudioFormat { get;  }
-        double? SampleRate { get; }
-
-        int? NumberChannels { get; }
-
-        int? LinearPcmBitDepth { get; }
-
-        bool? LinearPcmBigEndian { get; }
-
-        bool? LinearPcmFloat { get; }
-
-        bool? LinearPcmNonInterleaved { get;  }
-
-        IosAudioQuality? AudioQuality { get; }
-
-        IosAudioQuality? SampleRateConverterAudioQuality { get; }
-
-        int? EncoderBitRate { get; }
-
-        int? EncoderBitRatePerChannel { get; }
-
-        int? EncoderBitDepthHint { get; }
-
-        // [iOS(7, 0)]
-        // public AVAudioBitRateStrategy? BitRateStrategy
-        //
-        // [iOS(7, 0)]
-        // public AVSampleRateConverterAlgorithm? SampleRateConverterAlgorithm
-        //
-        // [iOS(7, 0)]
-        // public AVAudioQuality? EncoderAudioQualityForVBR
-        //
+        /// <summary>
+        /// Default settings is MP4AAR
+        /// </summary>
+        public static RecorderSettings Default => new RecorderSettings
+        {
+            IosRecorderSettings = new IosMp4Aar(),
+            DroidRecorderSettings = new DroidMp4Aar()
+        };
     }
 }

@@ -1,8 +1,6 @@
-using nightly.xam.audiorecorder.Shared;
-
-namespace nightly.xam.audiorecorder.Shared
+namespace nightly.xam.audiorecorder.Shared.Ios
 {
-    public class Mp4Aar : IIosRecorderSettings
+    public class IosMp4Aar : IIosRecorderSettings
     {
         public IosAudioFormat AudioFormat { get; } = IosAudioFormat.MPEG4AAC;
         public double? SampleRate { get; private set; }
@@ -23,7 +21,7 @@ namespace nightly.xam.audiorecorder.Shared
         /// </summary>
         /// <param name="rate"></param>
         /// <returns></returns>
-        public Mp4Aar WithSampleRate(double rate)
+        public IosMp4Aar WithSampleRate(double rate)
         {
             this.SampleRate = rate;
             return this;

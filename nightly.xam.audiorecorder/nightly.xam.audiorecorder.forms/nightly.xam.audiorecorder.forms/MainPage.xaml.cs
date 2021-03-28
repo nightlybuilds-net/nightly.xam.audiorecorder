@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using nightly.xam.audiorecorder.Shared;
+using nightly.xam.audiorecorder.Shared.Ios;
 using Xamarin.Forms;
 
 namespace nightly.xam.audiorecorder.forms
@@ -17,10 +18,7 @@ namespace nightly.xam.audiorecorder.forms
         public MainPage()
         {
             this.InitializeComponent();
-            this._recordService = new NightlyRecorderService(new RecorderSettings
-            {
-                IosRecorderSettings = new Mp4Aar().WithSampleRate(12000)
-            });
+            this._recordService = new NightlyRecorderService(RecorderSettings.Default);
 
         }
 

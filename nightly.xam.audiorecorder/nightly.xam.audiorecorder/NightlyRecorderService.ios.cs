@@ -20,6 +20,12 @@ namespace nightly.xam.audiorecorder
 
         public bool IsRecording => this._recorder?.Recording ?? false;
 
+        public NightlyRecorderService()
+        {
+            this._settings = RecorderSettings.Default;
+            this.InitTempFilePath();
+        }
+
         public NightlyRecorderService(RecorderSettings settings)
         {
             this._settings = settings;

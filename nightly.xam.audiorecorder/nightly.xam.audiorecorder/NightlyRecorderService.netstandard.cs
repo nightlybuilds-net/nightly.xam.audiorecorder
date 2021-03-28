@@ -9,14 +9,10 @@ namespace nightly.xam.audiorecorder
     {
 
         public NightlyRecorderService()
-        {
-            
-        }
+        { }
 
         public NightlyRecorderService(RecorderSettings settings)
-        {
-            
-        }
+        { }
 
         public Task<Stream> RecordAsync()
         {
