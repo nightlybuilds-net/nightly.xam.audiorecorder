@@ -2,28 +2,28 @@ namespace nightly.xam.audiorecorder.Shared.Ios
 {
     public interface IIosRecorderSettings
     {
-        IosAudioFormat AudioFormat { get;  }
-        double? SampleRate { get; }
+        IosAudioFormat AudioFormat { get; set; }
+        double? SampleRate { get; set; }
 
-        int? NumberChannels { get; }
+        int? NumberChannels { get; set; }
 
-        int? LinearPcmBitDepth { get; }
+        int? LinearPcmBitDepth { get; set; }
 
-        bool? LinearPcmBigEndian { get; }
+        bool? LinearPcmBigEndian { get; set; }
 
-        bool? LinearPcmFloat { get; }
+        bool? LinearPcmFloat { get; set; }
 
-        bool? LinearPcmNonInterleaved { get;  }
+        bool? LinearPcmNonInterleaved { get; set; }
 
-        IosAudioQuality? AudioQuality { get; }
+        IosAudioQuality? AudioQuality { get; set; }
 
-        IosAudioQuality? SampleRateConverterAudioQuality { get; }
+        IosAudioQuality? SampleRateConverterAudioQuality { get; set; }
 
-        int? EncoderBitRate { get; }
+        int? EncoderBitRate { get; set; }
 
-        int? EncoderBitRatePerChannel { get; }
+        int? EncoderBitRatePerChannel { get; set;}
 
-        int? EncoderBitDepthHint { get; }
+        int? EncoderBitDepthHint { get; set; }
 
         // [iOS(7, 0)]
         // public AVAudioBitRateStrategy? BitRateStrategy

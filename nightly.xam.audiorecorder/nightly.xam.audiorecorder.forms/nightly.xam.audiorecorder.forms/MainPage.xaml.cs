@@ -18,7 +18,7 @@ namespace nightly.xam.audiorecorder.forms
         public MainPage()
         {
             this.InitializeComponent();
-            this._recordService = new NightlyRecorderService(RecorderSettings.Default);
+            this._recordService = new NightlyRecorderService();
 
         }
 

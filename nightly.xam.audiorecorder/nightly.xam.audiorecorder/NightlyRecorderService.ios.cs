@@ -16,7 +16,7 @@ namespace nightly.xam.audiorecorder
         private NSUrl _url;
         private string _path;
         private TaskCompletionSource<Stream> _recordTask;
-        private RecorderSettings _settings;
+        private readonly RecorderSettings _settings;
 
         public bool IsRecording => this._recorder?.Recording ?? false;
 

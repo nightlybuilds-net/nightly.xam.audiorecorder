@@ -26,6 +26,9 @@
         <Compile Remove="**\*.droid.cs" />
         <Compile Remove="**\*.ios.cs" />
         <Compile Remove="**\*.windows.cs" />
+        <Compile Update="Shared\Ios\IosExtensions.cs">
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
