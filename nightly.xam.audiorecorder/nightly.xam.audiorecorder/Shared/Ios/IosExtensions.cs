@@ -20,7 +20,7 @@ namespace nightly.xam.audiorecorder.Shared.Ios
         /// <param name="setting"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        public static IIosRecorderSettings WithSamplingRate(this IIosRecorderSettings setting, SamplingRate rate)
+        public static IIosRecorderSettings WithSamplingRate(this IIosRecorderSettings setting, SampleRate rate)
         {
             setting.SampleRate = (int)rate;
             return setting;

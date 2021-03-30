@@ -1,9 +1,9 @@
 namespace nightly.xam.audiorecorder.Shared.Droid
 {
-    public class DroidMp4Aar : IDroidRecorderSettings
+    public class Droid3GppAar : IDroidRecorderSettings
     {
         public DroidAudioEncoder AudioEncoder { get; } = DroidAudioEncoder.Aac;
-        public DroidOutPutFormat OutPutFormat { get; } = DroidOutPutFormat.Mpeg4;
+        public DroidOutPutFormat OutPutFormat { get; } = DroidOutPutFormat.ThreeGpp;
         public int? SamplingRate { get; set; }
         public int? AudioChannels { get; set; }
         public int? CaptureRate { get; set; }

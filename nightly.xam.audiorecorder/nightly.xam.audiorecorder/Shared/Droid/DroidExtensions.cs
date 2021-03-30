@@ -20,7 +20,7 @@ namespace nightly.xam.audiorecorder.Shared.Droid
         /// <param name="setting"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        public static IDroidRecorderSettings WithSamplingRate(this IDroidRecorderSettings setting, SamplingRate rate)
+        public static IDroidRecorderSettings WithSamplingRate(this IDroidRecorderSettings setting, SampleRate rate)
         {
             setting.SamplingRate = (int)rate;
             return setting;

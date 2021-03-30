@@ -1,8 +1,8 @@
 namespace nightly.xam.audiorecorder.Shared
 {
-    public enum SamplingRate
+    public enum SampleRate
     {
-        Low = 11200,
+        Low = 11000,
         Medium = 22000,
         Normal = 44100,
         High = 48000
