@@ -46,20 +46,28 @@ namespace nightly.xam.audiorecorder
 
         public void Stop()
         {
-            if (!this.IsRecording || this._recorder == null)
-                return;
-
-            this._recorder.Stop();
-
-            using (var streamReader = new StreamReader(this._path))
+            try
             {
-                var memstream = new MemoryStream();
-                streamReader.BaseStream.CopyTo(memstream);
-                memstream.Seek(0, SeekOrigin.Begin);
-                this._recordTask.SetResult(memstream);
-            }
+                if (!this.IsRecording || this._recorder == null)
+                    return;
 
-            File.Delete(this._path);
+                this._recorder.Stop();
+
+                using (var streamReader = new StreamReader(this._path))
+                {
+                    var memstream = new MemoryStream();
+                    streamReader.BaseStream.CopyTo(memstream);
+                    memstream.Seek(0, SeekOrigin.Begin);
+                    this._recordTask.SetResult(memstream);
+                }
+
+                File.Delete(this._path);
+            }
+            catch (Exception e)
+            {
+                throw new RecorderException(e);
+            }
+            
         }
 
         private void InitializeRecordService()
@@ -67,12 +75,12 @@ namespace nightly.xam.audiorecorder
             var audioSession = AVAudioSession.SharedInstance();
             var err = audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord);
             if (err != null)
-                throw new RecorderNativeException(err, err.LocalizedFailureReason);
+                throw new RecorderException(err);
 
             err = audioSession.SetActive(true);
 
             if (err != null)
-                throw new RecorderNativeException(err, err.LocalizedFailureReason);
+                throw new RecorderException(err);
 
             this._url = NSUrl.FromFilename(this._path);
             var settings = this.GetAudioSettings();
@@ -82,7 +90,7 @@ namespace nightly.xam.audiorecorder
                 this._recorder = AVAudioRecorder.Create(this._url, settings, out var error);
 
                 if (error != null)
-                    throw new RecorderNativeException(error, error.LocalizedFailureReason);
+                    throw new RecorderException(error);
             }
 
             var ready = this._recorder.PrepareToRecord();

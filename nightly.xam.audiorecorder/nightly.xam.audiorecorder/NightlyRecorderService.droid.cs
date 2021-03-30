@@ -35,9 +35,9 @@ namespace nightly.xam.audiorecorder
         {
             try
             {
-                if(File.Exists(this._filePath))
+                if (File.Exists(this._filePath))
                     File.Delete(this._filePath);
-                
+
                 var myFile = new Java.IO.File(this._filePath);
                 myFile.CreateNewFile();
 
@@ -54,7 +54,11 @@ namespace nightly.xam.audiorecorder
             }
             catch (JavaException e)
             {
-                throw new RecorderNativeException(e, e.Message);
+                throw new RecorderException(e);
+            }
+            catch (Exception e)
+            {
+                throw new RecorderException(e);
             }
         }
 
@@ -124,7 +128,11 @@ namespace nightly.xam.audiorecorder
             }
             catch (JavaException e)
             {
-                throw new RecorderNativeException(e, e.Message);
+                throw new RecorderException(e);
+            }
+            catch (Exception e)
+            {
+                throw new RecorderException(e);
             }
         }
 
