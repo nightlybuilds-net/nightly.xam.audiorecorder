@@ -11,7 +11,7 @@
         <Title>nightly.xam.audiorecorder</Title>
         <Description>nightly.xam.audiorecorder: a simple cross platform library for record compressed audio.</Description>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <PackageVersion>0.1.0</PackageVersion>
+        <PackageVersion>1.0.0</PackageVersion>
         <Authors>Nightly Builds</Authors>
         <Owners>Nightly Builds</Owners>
         <NeutralLanguage>en</NeutralLanguage>
