@@ -8,7 +8,9 @@
     ios:Page.UseSafeArea="true"
     x:Class="nightly.xam.audiorecorder.forms.MainPage">
 
-    <StackLayout>
+    <StackLayout
+        
+        >
         <!-- Place new controls here -->
         <Label Text="Welcome to Nightly AudioRecorder"
                HorizontalOptions="Center"
@@ -17,15 +19,28 @@
         <Button
             x:Name="RecordBtn"
             Clicked="RecordButton_OnClicked"
-            Text="Start" />
+            Text="Record" />
         <Button
             x:Name="StopBtn"
             Clicked="StopButton_OnClicked"
             Text="Stop" />
         <Button
+            IsVisible="False"
             x:Name="PlayBtn"
             Clicked="PlayButton_OnClicked"
             Text="Play" />
+        <Label
+            IsVisible="False"
+            x:Name="SizeLabel"
+            HorizontalOptions="Center">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Size: "/>
+                    <Span x:Name="SizeSpan"/>
+                    <Span Text=" KB"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
 
     </StackLayout>
 
