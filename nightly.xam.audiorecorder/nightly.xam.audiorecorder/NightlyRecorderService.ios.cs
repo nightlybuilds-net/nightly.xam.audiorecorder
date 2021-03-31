@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AudioToolbox;
@@ -11,31 +12,32 @@ namespace nightly.xam.audiorecorder
 {
     public partial class NightlyRecorderService : IRecorder
     {
-        private readonly RecordFormat _recordFormat;
         private AVAudioRecorder _recorder;
         private NSUrl _url;
-        private readonly string _path;
+        private string _path;
         private TaskCompletionSource<Stream> _recordTask;
+        private readonly RecorderSettings _settings;
 
         public bool IsRecording => this._recorder?.Recording ?? false;
-        
 
-        public NightlyRecorderService(RecordFormat recordFormat)
+        public NightlyRecorderService()
         {
-            this._recordFormat = recordFormat;
-
-            // init a temp file
-            var path = Path.GetTempPath();
-            var audioFilePath = Path.Combine(path, Guid.NewGuid().ToString("N"));
-            this._path = audioFilePath;
+            this._settings = RecorderSettings.Default;
+            this.InitTempFilePath();
         }
 
-        public Task<Stream> RecordAsync(int sampleRate = 44100)
+        public NightlyRecorderService(RecorderSettings settings)
+        {
+            this._settings = settings;
+            this.InitTempFilePath();
+        }
+
+        public Task<Stream> RecordAsync()
         {
             if (this.IsRecording)
                 throw new Exception("Service already recording.");
 
-            this.InitializeRecordService(sampleRate);
+            this.InitializeRecordService();
             this._recorder.Record();
             this._recordTask = new TaskCompletionSource<Stream>();
             return this._recordTask.Task;
@@ -44,43 +46,51 @@ namespace nightly.xam.audiorecorder
 
         public void Stop()
         {
-            if (!this.IsRecording || this._recorder == null)
-                return;
-
-            this._recorder.Stop();
-
-            using (var streamReader = new StreamReader(this._path))
+            try
             {
-                var memstream = new MemoryStream();
-                streamReader.BaseStream.CopyTo(memstream);
-                memstream.Seek(0, SeekOrigin.Begin);
-                this._recordTask.SetResult(memstream);
-            }
+                if (!this.IsRecording || this._recorder == null)
+                    return;
 
-            File.Delete(this._path);
+                this._recorder.Stop();
+
+                using (var streamReader = new StreamReader(this._path))
+                {
+                    var memstream = new MemoryStream();
+                    streamReader.BaseStream.CopyTo(memstream);
+                    memstream.Seek(0, SeekOrigin.Begin);
+                    this._recordTask.SetResult(memstream);
+                }
+
+                File.Delete(this._path);
+            }
+            catch (Exception e)
+            {
+                throw new RecorderException(e);
+            }
+            
         }
 
-        private void InitializeRecordService(int bitRate)
+        private void InitializeRecordService()
         {
             var audioSession = AVAudioSession.SharedInstance();
             var err = audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord);
             if (err != null)
-                throw new RecorderNativeException(err, err.LocalizedFailureReason);
+                throw new RecorderException(err);
 
             err = audioSession.SetActive(true);
 
             if (err != null)
-                throw new RecorderNativeException(err, err.LocalizedFailureReason);
+                throw new RecorderException(err);
 
             this._url = NSUrl.FromFilename(this._path);
-            var settings = this.GetAudioSettings(bitRate);
+            var settings = this.GetAudioSettings();
 
             if (this._recorder == null)
             {
                 this._recorder = AVAudioRecorder.Create(this._url, settings, out var error);
 
                 if (error != null)
-                    throw new RecorderNativeException(error, error.LocalizedFailureReason);
+                    throw new RecorderException(error);
             }
 
             var ready = this._recorder.PrepareToRecord();
@@ -91,22 +101,37 @@ namespace nightly.xam.audiorecorder
         /// <summary>
         /// Retrieve audio settins for used audio format type
         /// </summary>
-        /// <param name="sampleRate"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private AudioSettings GetAudioSettings(int sampleRate)
+        private AudioSettings GetAudioSettings()
         {
-            if (this._recordFormat == RecordFormat.Mp4Aac)
+            return new AudioSettings
             {
-                return new AudioSettings
-                {
-                    Format = AudioFormatType.MPEG4AAC,
-                    NumberChannels = 1,
-                    SampleRate = sampleRate,
-                };
-            }
-
-            throw new NotImplementedException();
+                Format = (AudioFormatType?)this._settings.IosRecorderSettings.AudioFormat,
+                NumberChannels = this._settings.IosRecorderSettings.NumberChannels,
+                AudioQuality = (AVAudioQuality?)this._settings.IosRecorderSettings.AudioQuality,
+                SampleRate = this._settings.IosRecorderSettings.SampleRate,
+                // BitRateStrategy = ,
+                EncoderBitRate = this._settings.IosRecorderSettings.EncoderBitRate,
+                LinearPcmFloat = this._settings.IosRecorderSettings.LinearPcmFloat,
+                EncoderBitDepthHint = this._settings.IosRecorderSettings.EncoderBitDepthHint,
+                LinearPcmBigEndian = this._settings.IosRecorderSettings.LinearPcmBigEndian,
+                LinearPcmBitDepth = this._settings.IosRecorderSettings.LinearPcmBitDepth,
+                LinearPcmNonInterleaved = this._settings.IosRecorderSettings.LinearPcmNonInterleaved,
+                // SampleRateConverterAlgorithm = (AVAudioQuality?)this._settingsNew.IosRecorderSettings.SampleRateConverterAudioQuality,
+                EncoderBitRatePerChannel = this._settings.IosRecorderSettings.EncoderBitRatePerChannel,
+                SampleRateConverterAudioQuality = (AVAudioQuality?)this._settings.IosRecorderSettings.SampleRateConverterAudioQuality,
+                // EncoderAudioQualityForVBR = this._settingsNew.IosRecorderSettings.vb,
+                //SampleRate = (int)this._settings.RecordQuality,
+            };
+        }
+        
+        private void InitTempFilePath()
+        {
+            // init a temp file
+            var path = Path.GetTempPath();
+            var audioFilePath = Path.Combine(path, Guid.NewGuid().ToString("N"));
+            this._path = audioFilePath;
         }
 
         public void Dispose()

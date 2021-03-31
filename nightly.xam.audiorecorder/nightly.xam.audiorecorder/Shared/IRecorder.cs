@@ -9,9 +9,8 @@ namespace nightly.xam.audiorecorder.Shared
         /// <summary>
         /// Start registration
         /// </summary>
-        /// <param name="sampleRate"></param>
         /// <returns></returns>
-        Task<Stream> RecordAsync(int sampleRate = 44100);
+        Task<Stream> RecordAsync();
 
         /// <summary>
         /// Stop registration

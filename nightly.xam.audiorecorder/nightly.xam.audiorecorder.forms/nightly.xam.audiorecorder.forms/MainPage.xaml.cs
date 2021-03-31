@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using nightly.xam.audiorecorder.Shared;
+using nightly.xam.audiorecorder.Shared.Droid;
+using nightly.xam.audiorecorder.Shared.Ios;
 using Xamarin.Forms;
 
 namespace nightly.xam.audiorecorder.forms
@@ -17,7 +19,18 @@ namespace nightly.xam.audiorecorder.forms
         public MainPage()
         {
             this.InitializeComponent();
-            this._recordService = new NightlyRecorderService(RecordFormat.Mp4Aac);
+            // default
+            this._recordService = new NightlyRecorderService();
+            // explicit default
+            // this._recordService = new NightlyRecorderService(RecorderSettings.Default);
+            // default with custom samplerate
+            // this._recordService = new NightlyRecorderService(RecorderSettings.Default.WithSampleRate(SampleRate.Low));
+            // custom config
+            // this._recordService = new NightlyRecorderService(new RecorderSettings
+            // {
+            //     IosRecorderSettings = new IosAppleLossLess(),
+            //     DroidRecorderSettings = new DroidOggOpus()
+            // });
         }
 
         private async void RecordButton_OnClicked(object sender, EventArgs e)
@@ -29,14 +42,6 @@ namespace nightly.xam.audiorecorder.forms
 
             var streamFile = await this._recordService.RecordAsync();
             this._stream = streamFile;
-            
-            // var path = Path.GetTempPath();
-            // var filePath = Path.Combine(path, "eccolo.mp4");
-            // if(File.Exists(filePath))
-            //     File.Delete(filePath);
-            
-            // using (var fileStream = new FileStream(filePath, FileMode.Create))
-            //     await streamFile.CopyToAsync(fileStream);
         }
 
         private void StopButton_OnClicked(object sender, EventArgs e)
@@ -57,6 +62,12 @@ namespace nightly.xam.audiorecorder.forms
             this._stream.Seek(0, SeekOrigin.Begin);
             player.Load(this._stream);
             player.Play();
+        }
+
+        protected override void OnDisappearing()
+        {
+            this._recordService.Dispose();
+            base.OnDisappearing();
         }
     }
 }
