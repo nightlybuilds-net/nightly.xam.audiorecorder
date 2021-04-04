@@ -28,5 +28,17 @@ namespace nightly.xam.audiorecorder.Shared
             this.DroidRecorderSettings.WithSamplingRate(sampleRate);
             return this;
         }
+        
+        /// <summary>
+        /// Set samplerate o ios and droid
+        /// </summary>
+        /// <param name="sampleRate"></param>
+        /// <returns></returns>
+        public RecorderSettings WithSampleRate(int sampleRate)
+        {
+            this.IosRecorderSettings.WithSamplingRate(sampleRate);
+            this.DroidRecorderSettings.WithSamplingRate(sampleRate);
+            return this;
+        }
     }
 }
