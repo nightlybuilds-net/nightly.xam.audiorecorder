@@ -95,7 +95,7 @@ namespace nightly.xam.audiorecorder
 
             var ready = this._recorder.PrepareToRecord();
             if (!ready)
-                throw new Exception("PrepareToRecord() returned false");
+                throw new RecorderException("PrepareToRecord() returned false");
         }
 
         /// <summary>
