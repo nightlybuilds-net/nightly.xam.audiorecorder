@@ -51,6 +51,25 @@ or you can use others ready to use configurations in this way:
  });
 ```
 
+## Permission
+
+This library doesn't manage permission for record audio from device MIC.
+I Suggest you to use Xamarin Essentials Permission API like this:
+
+```sh
+var status = await Permissions.CheckStatusAsync<Permissions.Microphone>();
+
+	if (status != PermissionStatus.Granted)
+	{
+		status = await Permissions.RequestAsync<Permissions.Microphone>();
+		if (status != PermissionStatus.Granted)
+		{
+		    await this.DisplayAlert("Alert","you need pemrission to mic", "ok");
+		    return;
+		}
+	}
+```
+
 ## API
 
 You can customize iOS and Android record settings implementing the following interfaces
