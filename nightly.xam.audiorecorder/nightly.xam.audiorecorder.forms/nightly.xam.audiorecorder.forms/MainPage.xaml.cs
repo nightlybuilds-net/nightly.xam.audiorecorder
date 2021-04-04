@@ -24,7 +24,7 @@ namespace nightly.xam.audiorecorder.forms
             // explicit default
             // this._recordService = new NightlyRecorderService(RecorderSettings.Default);
             // default with custom samplerate
-            // this._recordService = new NightlyRecorderService(RecorderSettings.Default.WithSampleRate(SampleRate.Low));
+            // this._recordService = new NightlyRecorderService(RecorderSettings.Default.WithSampleRate(SampleRate._48000));
             // custom config
             // this._recordService = new NightlyRecorderService(new RecorderSettings
             // {
